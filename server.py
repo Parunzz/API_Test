@@ -51,14 +51,15 @@ def withdraw():
 def get_balance():
     return jsonify({'balance': balance}), 200
 
-@app.route('/translate', methods=['POST'])
-def translate():
+@app.route('/reversed_text', methods=['POST'])
+def reversed_text():
     try:
         data = request.get_json()
         thai_text = data['thai_text']
         # Dummy translation, replace with actual translation logic
-        english_text = thai_text + " (translated)"
-        return jsonify({'english_text': english_text}), 200
+        reversed_text = thai_text[::-1]
+        print(reversed_text)
+        return jsonify({'reversed_text': reversed_text}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

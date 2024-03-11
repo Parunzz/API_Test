@@ -65,13 +65,14 @@ def test_safe_property():
     assert balance_data['balance'] == initial_balance
 
 # 8: Thai to English translation
-def test_translation():
+def test_reversed_text():
     thai_text = "สวัสดี"
-    response = requests.post(f'{BASE_URL}/translate', json={'thai_text': thai_text})
+    response = requests.post(f'{BASE_URL}/reversed_text', json={'thai_text': thai_text})
     assert response.status_code == 200
     translation_data = response.json()
-    assert 'english_text' in translation_data
-    assert thai_text in translation_data['english_text']
+    assert 'reversed_text' in translation_data
+    reversed_thai_text = thai_text[::-1]
+    assert reversed_thai_text in translation_data['reversed_text']
 
 # 9: Check response format
 def test_response_format():
