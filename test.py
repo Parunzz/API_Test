@@ -81,3 +81,22 @@ def test_response_format():
     deposit_data = response.json()
     assert 'message' in deposit_data
 
+# 10: Attempt to withdraw an amount larger than the current balance
+def test_withdrawal_greater_than_balance():
+    # Assume initial balance is 500
+    initial_balance_response = requests.get(f'{BASE_URL}/balance')
+    assert initial_balance_response.status_code == 200
+    initial_balance_data = initial_balance_response.json()
+    initial_balance = initial_balance_data['balance']
+
+    # Attempt to withdraw an amount larger than the balance
+    withdrawal_amount = initial_balance + 100
+    withdrawal_response = requests.post(f'{BASE_URL}/withdraw', json={'amount': withdrawal_amount})
+    assert withdrawal_response.status_code == 400
+
+    # Verify that the balance remains unchanged
+    final_balance_response = requests.get(f'{BASE_URL}/balance')
+    assert final_balance_response.status_code == 200
+    final_balance_data = final_balance_response.json()
+    final_balance = final_balance_data['balance']
+    assert final_balance == initial_balance
