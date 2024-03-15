@@ -39,11 +39,10 @@ def test_response_status_200():
     
 # 6 Idempotent: Check idempotent property
 def test_idempotent_property():
-    # Making multiple deposit requests with the same amount
     for _ in range(3):
         response = requests.post(f'{BASE_URL}/deposit', json={'amount': 100})
         assert response.status_code == 200
-    # Checking the balance to ensure it's consistent
+        
     balance_response = requests.get(f'{BASE_URL}/balance')
     assert balance_response.status_code == 200
     balance_data = balance_response.json()
@@ -55,8 +54,7 @@ def test_safe_property():
     assert initial_balance_response.status_code == 200
     initial_balance_data = initial_balance_response.json()
     initial_balance = initial_balance_data['balance']
-
-    # Making a GET request which should not modify the server state
+    
     response = requests.get(f'{BASE_URL}/balance')
     assert response.status_code == 200
     balance_response = requests.get(f'{BASE_URL}/balance')
@@ -64,7 +62,7 @@ def test_safe_property():
     balance_data = balance_response.json()
     assert balance_data['balance'] == initial_balance
 
-# 8: Thai to English translation
+# 8: Reversed Thai text
 def test_reversed_text():
     thai_text = "สวัสดี"
     response = requests.post(f'{BASE_URL}/reversed_text', json={'thai_text': thai_text})
@@ -76,7 +74,6 @@ def test_reversed_text():
 
 # 9: Check response format
 def test_response_format():
-    # Making a deposit request with missing amount parameter
     response = requests.post(f'{BASE_URL}/deposit', json={})
     assert response.status_code == 200
     deposit_data = response.json()
